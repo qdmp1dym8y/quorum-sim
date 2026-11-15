@@ -1,0 +1,10 @@
+# build output
+/bin/
+*.test
+*.out
+coverage.html
+
+# editor and OS noise
+.DS_Store
+.idea/
+.vscode/
