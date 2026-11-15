@@ -84,6 +84,23 @@ for _, line := range e.Trace() {
 
 Rerun the same config and seed to get an identical trace.
 
+### Scripted faults
+
+The `chaos` package stores a fault scenario as data and applies it on
+`Config.OnEvent`:
+
+```go
+s, err := chaos.New([]chaos.Fault{
+	{At: 100, Kind: chaos.Partition, A: "a", B: "b"},
+	{At: 400, Kind: chaos.Heal, A: "a", B: "b"},
+	{At: 500, Kind: chaos.Crash, A: "c"},
+})
+if err != nil {
+	log.Fatal(err)
+}
+cfg.OnEvent = s.Hook()
+```
+
 ## Layout
 
 | File | Contents |
@@ -92,6 +109,7 @@ Rerun the same config and seed to get an identical trace.
 | `net.go` | latency, loss and partition model |
 | `cluster.go` | Raft election state machine (`RaftNode`) |
 | `cluster_test.go` | determinism and single-leader-per-term checks |
+| `chaos/` | time-ordered partition, heal and crash scripts |
 
 ## Tests
 
